@@ -103,8 +103,8 @@ int main(){
 
 		while (offset == prevOffset) {
             std::this_thread::yield(); // asm("nop");
-            current = std::chrono::system_clock::now();
-            offset = std::chrono::duration_cast<std::chrono::microseconds>(current - start).count() * 8000 / 1000000;
+            current = std::chrono::system_clock::now();												//sample rate
+            offset = std::chrono::duration_cast<std::chrono::microseconds>(current - start).count() * 22050 / 1000000;
        }
 
 	}

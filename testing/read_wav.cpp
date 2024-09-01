@@ -35,7 +35,7 @@ typedef struct  WAV_HEADER
 
 	wav_hdr wav_header;
 
-	wavfile=fopen("Asine.wav","rb");
+	wavfile=fopen("acoustic_guitar_duet.wav","rb");
 
 	size_t header_size=sizeof(wav_hdr);
 
