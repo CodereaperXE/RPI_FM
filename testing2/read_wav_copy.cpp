@@ -1,9 +1,5 @@
 #include <iostream>
 #include <fcntl.h>
-#include <stdint.h>
-#include <climits>
-#include <vector>
-#include "read_wav.hpp"
 
 typedef struct  WAV_HEADER
 {
@@ -28,8 +24,7 @@ typedef struct  WAV_HEADER
 
 
 
- std::vector<float> get_values(){
- 	std::vector<float> a;
+int main(){
 	//wav file header reading;
 	FILE* wavfile;
 
@@ -56,20 +51,17 @@ typedef struct  WAV_HEADER
 		std::cerr<<"error";
 	}
 
-	std::cout<<fread(data,sizeof(int16_t),wav_header.Subchunk2Size,wavfile) <<std::endl;
+	std::cout<<fread(data,sizeof(int16_t),wav_header.Subchunk2Size,wavfile);
 
-	std::cout<<wav_header.NumOfChan<<std::endl;
-	std::cout<<wav_header.Subchunk2Size<<std::endl;
-	for(int i=0;i<wav_header.Subchunk2Size;i++){
-		a.push_back(2*data[i]/static_cast<float>(USHRT_MAX));
-		// if(i%2==0) {std::cout<<std::endl;}
+	for(int i=0;i<1000;i++){
+		std::cout<<data[i]<<" ";
+		if(i%2==0) {std::cout<<std::endl;}
 	}
 
 	//writing data for testing;
 
 	free(data);
 	fclose(wavfile);
-	return a;
 
 
 
