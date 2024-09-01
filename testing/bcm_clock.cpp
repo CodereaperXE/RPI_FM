@@ -4,7 +4,8 @@
 #include <sys/mman.h>
 #include <chrono>
 #include <thread>
-
+#include "read_wav.hpp"
+#include <cmath>
 
 #define PERIPHERALS_VIRT_BASE 	0x7E000000 		  //base address of peripherals
 #define BCM2835_PERI_PHYS_BASE 	0x20000000 		  //base address of physical address
@@ -24,7 +25,6 @@
 #define GPCLK_DIVI(x) 			(x)		  //value for gpclk divisor	
 
 #define PERIPHERAL_SIZE  		0x01000000  	  // 16 MB
-
 
 
 int main(){
@@ -47,7 +47,7 @@ int main(){
 	// *output = (*output & ~(7 << 12)) | (4 << 12); // setting GPIO pin 4 to ALT0
 
 	uint32_t *gpclk=(uint32_t*)((uintptr_t)peripherals+GPCLK0_OFFSET);
-
+	//disable clock
 	*gpclk = CLK_MANAGER_PASSWD | (1<<5); //disable clock
 	std::this_thread::sleep_for(std::chrono::microseconds(1000));
 
@@ -63,18 +63,33 @@ int main(){
 
 	//enable clock
 	*gpclk = CLK_MANAGER_PASSWD | GPCLK_CTL_SRC_PLLD | GPCLK_CTL_ENAB | GPCLK_CTL_MASH(0x1);  // Enable clock
-
+ 	
 	if((*gpclk & (1 << 5)) != 0) {
     std::cout << "kill mode still on" << std::endl;
 	}
 
 	std::cout<<"dfdfd"<<std::endl;
-	munmap(peripherals,PERIPHERAL_SIZE);
-
+	
+	int a=0;
 	try{
-	while(1){
+	
+	std::vector<float> a;
+	a=get_values();
+	int divi=0;
+	for(auto c:a){
+	// 	if(a==0){
+	// 	*divisor=CLK_MANAGER_PASSWD | 0x00005001;
+	// 	a=1;
+	// 	std::this_thread::sleep_for(std::chrono::microseconds(100));
+	// }else if (a==1){
+	// 	*divisor=CLK_MANAGER_PASSWD | 0x00005000;
+	// 	std::this_thread::sleep_for(std::chrono::microseconds(100));
+	// 	a=0;
+	// }
 
+		*divisor=CLK_MANAGER_PASSWD | (0x00005000 - static_cast<int>(round(c)));
 	}
+	munmap(peripherals,PERIPHERAL_SIZE);
 }catch(...){
 	std::cout<<"hello";
 }
