@@ -6,6 +6,7 @@
 #include <chrono>
 #include <thread>
 #include <cmath>
+#include <climits>
 
 //define
 //specific for BCM2835
