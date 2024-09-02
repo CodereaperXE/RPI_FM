@@ -51,7 +51,7 @@ typedef struct  WAV_HEADER
 
 	// std::cout<<wav_header.Subchunk2Size;
 	// std::cout<<datachunk_size;	
-	int16_t *data=(int16_t*)malloc(wav_header.Subchunk2Size);
+	int16_t *data=(int16_t*)malloc(wav_header.Subchunk2Size*sizeof(int16_t));
 	if(!data){
 		std::cerr<<"error";
 	}
